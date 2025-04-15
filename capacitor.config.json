@@ -1,0 +1,17 @@
+{
+  "appId": "com.insightmini",
+  "appName": "insightmini",
+  "webDir": "dist",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true
+  },
+  "icon": {
+    "android": {
+      "foreground": "resources/icon-foreground.png",
+      "background": "resources/icon-background.png"
+    }
+  }
+}
