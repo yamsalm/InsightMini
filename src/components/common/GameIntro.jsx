@@ -82,7 +82,7 @@ const GameIntro = ({
           <GameIcon size={120} color={COLORS.PRIMARY} />
         </div>
         <h1>{t(`games.${game.id}.title`)}</h1>
-        <p>{t(`games.${game.id}.description`)}</p>
+        <p>{game.explain}</p>
       </div>
       
       <div style={contentStyle}>

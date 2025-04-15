@@ -59,6 +59,7 @@ export const TRANSLATIONS = {
         title: 'Connected Breaths',
         category: 'Right Conduct',
         description: 'Compare your breaths and develop awareness',
+        explain: 'Compare your breaths and develop awareness for long and short breaths',
         longer: 'Longer',
         equal: 'Equal',
         shorter: 'Shorter',
@@ -72,6 +73,7 @@ export const TRANSLATIONS = {
         title: 'Mindful Review',
         category: 'Mindfulness',
         description: 'Reflect on your day with awareness',
+        explain: 'Reflect on your day with awareness and choose a few meaningful events from your day, it is recommended to choose a few positive and negative events',
         numEvents: 'Number of Events',
         sessionLength: 'Session Length',
         event: 'Event {current} of {total}',
@@ -183,7 +185,7 @@ export const TRANSLATIONS = {
     home: {
       title: 'Insight Mini',
       dailySession: 'מפגש יומי',
-      dailySessionDesc: 'השלם את vתרגול היומי שלך',
+      dailySessionDesc: 'השלם את תרגול היומי שלך',
       randomGame: 'משחק אקראי',
       randomGameDesc: 'נסה תרגיל  אקראי',
       games: 'משחקים',
@@ -210,19 +212,20 @@ export const TRANSLATIONS = {
       returnHome: 'חזור הביתה'
     },
     games: {
-      title: 'משחקים',
+      title: 'תרגילים',
       noGamesAvailable: 'אין תרגולים זמינים בקטגוריה זו עדיין.',
-      comingSoon: 'משחקים נוספים בקרוב',
+      comingSoon: 'תרגילים נוספים בקרוב',
       'connected-breaths': {
         title: 'נשימות מחוברות',
         category: 'נשימה',
         description: 'השווה את הנשימות שלך ופתח מודעות',
+        explain: 'השווה את הנשימות שלך ופתח מודעות ובחר כמה אירועים משמעותים מהיום מומלץ לבחור כמה אירעים חיובים ושלילים',
         longer: 'ארוך יותר',
         equal: 'שווה',
         shorter: 'קצר יותר',
         sessionLength: 'אורך המפגש',
         instructions: {
-          compare: 'השווה כל נשימה לקודמת בלי לנסות לשלוט\n  או לשנות את קצב הנשימה',
+          compare: 'השווה כל נשימה לקודמת בלי לנסות לשלוט  או לשנות את קצב הנשימה',
           tap: 'הקש על הכפתור המתאר בצורה הטובה ביותר את הנשימה'
         }
       },
@@ -230,6 +233,7 @@ export const TRANSLATIONS = {
         title: 'סקירה מודעת',
         category: 'מודעות',
         description: 'התבונן ביום שלך במודעות',
+        explain: 'התבונן ביום שלך במודעות ובחר כמה אירועים משמעותים מהיום מומלץ לבחור כמה אירעים חיובים ושלילים',
         numEvents: 'מספר אירועים',
         sessionLength: 'אורך המפגש',
         event: 'אירוע {current} מתוך {total}',
@@ -246,8 +250,8 @@ export const TRANSLATIONS = {
         consequenceQuestion: 'מהן ההשלכות?',
         self: 'עבור עצמך',
         others: 'עבור אחרים',
-        reimagineQuestion: 'איך יכולת להגיב אחרת?',
-        reimaginePrompt: 'דמיין מגיב עם {intention}',
+        reimagineQuestion: 'איך היית יכול להגיב אחרת?',
+        reimaginePrompt: 'דמיין את עצמך מגיב עם {intention}',
         greaterAwareness: 'מודעות רבה יותר',
         steps: {
           classify: 'סיווג האירוע',
@@ -261,7 +265,7 @@ export const TRANSLATIONS = {
           consequences: 'בחינת השלכות',
           consequencesDesc: 'מהן ההשפעות על עצמך ועל אחרים?',
           reimagine: 'דמיון מחדש של התגובה',
-          reimagineDesc: 'איך יכולת להגיב אחרת בפעם הבאה?'
+          reimagineDesc: 'איך היית יכול להגיב אחרת בפעם הבאה?'
         },
         intentions: {
           compassion: 'חמלה',
@@ -272,7 +276,7 @@ export const TRANSLATIONS = {
           understandingDesc: 'רצון להבין',
           patience: 'סבלנות',
           patienceDesc: 'יכולת להמתין בסבלנות',
-          lovingKindness: 'אהבה-חמלה',
+          lovingKindness: 'אהבה חמלה',
           lovingKindnessDesc: 'משאלה לטובת אחרים',
           otherWholesome: 'מועיל אחר',
           otherWholesomeDesc: 'כוונה חיובית אחרת',

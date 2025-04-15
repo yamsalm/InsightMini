@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { AppProvider, useAppContext } from './context/AppContext.jsx';
 import { SCREENS } from './utils/constants.jsx';
+import { GAMES } from './utils/games.jsx';
 
 // Screens
 import Home from './components/screens/Home.jsx';
@@ -107,7 +108,13 @@ const AppContent = () => {
           return <div>Error: No game selected</div>;
         }
         
-        const GameComponent = currentGame.component;
+        // Get the game from GAMES object by finding the game with matching id
+        const game = Object.values(GAMES).find(g => g.id === currentGame.id);
+        if (!game || !game.component) {
+          return <div>Error: Game component not found</div>;
+        }
+        
+        const GameComponent = game.component;
         return (
           <GameComponent 
             onComplete={handleGameComplete} 

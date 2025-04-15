@@ -155,7 +155,7 @@ const MindfulReview = ({ onComplete, onSkip }) => {
   const game = {
     id: gameId,
     name: t(`games.${gameId}.title`),
-    description: t(`games.${gameId}.description`),
+    explain: t(`games.${gameId}.description`),
     icon: MindfulReviewIcon
   };
 
@@ -507,9 +507,7 @@ const MindfulReview = ({ onComplete, onSkip }) => {
               }}>
                 <p style={{ fontStyle: 'italic', marginBottom: '15px' }}>
                   {t(`games.${gameId}.reimaginePrompt`, {
-                    intention: isWholesome 
-                      ? t(`games.${gameId}.intentions.${selectedIntention?.name?.toLowerCase()}`)
-                      : t(`games.${gameId}.greaterAwareness`)
+                    intention: t(`games.${gameId}.greaterAwareness`)
                   })}
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>

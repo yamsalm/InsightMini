@@ -57,6 +57,11 @@ const DailySession = ({ setScreen, setCurrentGame, onBack }) => {
   };
 
   const handleBack = () => {
+    if (onBack) {
+      onBack();
+      return;
+    }
+
     if (isDailySessionActive) {
       // If in the middle of a daily session, just return to the daily session screen
       setCurrentGame(null);
