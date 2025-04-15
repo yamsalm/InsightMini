@@ -26,9 +26,9 @@ export const TRANSLATIONS = {
       title: 'Insight Mini',
       dailySession: 'Daily Session',
       dailySessionDesc: 'Complete your daily practice',
-      randomGame: 'Random Game',
+      randomGame: 'Random Exercise',
       randomGameDesc: 'Try a random exercise',
-      games: 'Games',
+      games: 'Exercises',
       gamesDesc: 'Browse all available exercise',
       settings: 'Settings',
       settingsDesc: 'Customize your experience'
@@ -54,7 +54,7 @@ export const TRANSLATIONS = {
     games: {
       title: 'exercise',
       noGamesAvailable: 'No exercise available in this category yet.',
-      comingSoon: 'More games coming soon',
+      comingSoon: 'More exercise coming soon',
       'connected-breaths': {
         title: 'Connected Breaths',
         category: 'Right Conduct',
@@ -132,29 +132,32 @@ export const TRANSLATIONS = {
           attachmentDesc: 'Holding on tightly',
           otherUnwholesome: 'Other Unwholesome',
           otherUnwholesomeDesc: 'Other negative intention'
-        }
+        },
+        negative: 'Negative',
+        positive: 'Positive',
+        neutral: 'Neutral'
       }
     },
     categories: {
       mindfulness: {
         name: 'Mindfulness',
-        description: 'Games that develop awareness and presence'
+        description: 'Exercises that develop awareness and presence'
       },
       conduct: {
         name: 'Right Conduct',
-        description: 'Games that promote ethical behavior and decision-making'
+        description: 'Exercises that promote ethical behavior and decision-making'
       },
       concentration: {
         name: 'Concentration',
-        description: 'Games that improve focus and attention'
+        description: 'Exercises that improve focus and attention'
       },
       'love-and-positivity': {
         name: 'Love and Positivity',
-        description: 'Games that cultivate compassion and positive emotions'
+        description: 'Exercises that cultivate compassion and positive emotions'
       },
       'right-perspective': {
         name: 'Right Perspective',
-        description: 'Games that help develop a balanced worldview'
+        description: 'Exercises that help develop a balanced worldview'
       }
     },
 
@@ -162,10 +165,10 @@ export const TRANSLATIONS = {
     settings: {
       title: 'Settings',
       language: 'Language',
-      gamePreferences: 'Game Preferences',
-      selectGames: 'Select which games appear in daily sessions and random selections.',
+      gamePreferences: 'Exercise Preferences',
+      selectGames: 'Select which Exercise appear in daily sessions and random selections.',
       about: 'About Insight Mini',
-      aboutText: 'Insight Mini helps you cultivate mindfulness and wellness through short, engaging games designed to enhance your mental well-being.',
+      aboutText: 'Insight Mini helps you cultivate mindfulness and wellness through short, engaging exercises designed to enhance your mental well-being.',
       version: 'Version 1.0.0'
     }
   },
@@ -188,16 +191,16 @@ export const TRANSLATIONS = {
       dailySessionDesc: 'השלם את תרגול היומי שלך',
       randomGame: 'משחק אקראי',
       randomGameDesc: 'נסה תרגיל  אקראי',
-      games: 'משחקים',
-      gamesDesc: 'עיין בכל המשחקים  הזמינים',
+      games: 'תרגילים',
+      gamesDesc: 'עיין בכל תרגילים  הזמינים',
       settings: 'הגדרות',
       settingsDesc: 'התאם אישית את החוויה שלך'
     },
     dailySession: {
       title: 'מפגש יומי',
-      todaysGames: 'המשחקים להיום',
+      todaysGames: 'תרגילים להיום',
       start: 'התחל',
-      game: 'משחק'
+      game: 'תרגיל'
     },
     gameComplete: {
       wellDone: 'כל הכבוד!',
@@ -219,7 +222,7 @@ export const TRANSLATIONS = {
         title: 'נשימות מחוברות',
         category: 'נשימה',
         description: 'השווה את הנשימות שלך ופתח מודעות',
-        explain: 'השווה את הנשימות שלך ופתח מודעות ובחר כמה אירועים משמעותים מהיום מומלץ לבחור כמה אירעים חיובים ושלילים',
+        explain: 'השווה את הנשימות שלך לנשימה האחרונה אל תנסה לשלוט בנשימות רק',
         longer: 'ארוך יותר',
         equal: 'שווה',
         shorter: 'קצר יותר',
@@ -292,29 +295,32 @@ export const TRANSLATIONS = {
           attachmentDesc: 'אחיזה חזקה',
           otherUnwholesome: 'לא מועיל אחר',
           otherUnwholesomeDesc: 'כוונה שלילית אחרת'
-        }
+        },
+        negative: 'שלילי',
+        positive: 'חיובי',
+        neutral: 'ניטרלי'
       }
     },
     categories: {
       mindfulness: {
         name: 'מיינדפולנס',
-        description: 'משחקים שמפתחים מודעות ונוכחות'
+        description: 'תרגילים שמפתחים מודעות ונוכחות'
       },
       conduct: {
         name: 'התנהגות נכונה',
-        description: 'משחקים שמקדמים התנהגות אתית וקבלת החלטות'
+        description: 'תרגילים שמקדמים התנהגות אתית וקבלת החלטות'
       },
       concentration: {
         name: 'ריכוז',
-        description: 'משחקים שמשפרים מיקוד וקשב'
+        description: 'תרגילים שמשפרים מיקוד וקשב'
       },
       'love-and-positivity': {
         name: 'אהבה וחיוביות',
-        description: 'משחקים שמטפחים חמלה ורגשות חיוביים'
+        description: 'תרגילים שמטפחים חמלה ורגשות חיוביים'
       },
       'right-perspective': {
         name: 'פרספקטיבה נכונה',
-        description: 'משחקים שעוזרים לפתח השקפת עולם מאוזנת'
+        description: 'תרגילים שעוזרים לפתח השקפת עולם מאוזנת'
       }
     },
 
@@ -322,11 +328,11 @@ export const TRANSLATIONS = {
     settings: {
       title: 'הגדרות',
       language: 'שפה',
-      gamePreferences: 'העדפות משחק',
-      selectGames: 'בחרו אילו משחקים יופיעו במפגשים יומיים ובבחירות אקראיות.',
+      gamePreferences: 'העדפות תרגילים',
+      selectGames: 'בחרו אילו תרגילים יופיעו במפגשים יומיים ובבחירות אקראיות.',
       about: 'אודות Insight Mini',
-      aboutText: 'Insight Mini עוזר לכם לטפח מודעות ובריאות דרך משחקים קצרים ומרתקים שנועדו לשפר את הרווחה הנפשית שלכם.',
-      version: 'גרסה 1.0.0'
+      aboutText: 'Insight Mini עוזר לכם לטפח מודעות ובריאות דרך תרגילים קצרים ומרתקים שנועדו לשפר את הרווחה הנפשית שלכם.',
+      version: 'גרסה 0.0.3'
     }
   }
 }; 

@@ -50,7 +50,8 @@ const GameIntro = ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: '20px'
+    marginBottom: '20px',
+    gap: '20px'
   };
 
   const footerStyle = {
@@ -62,7 +63,7 @@ const GameIntro = ({
 
   const settingsStyle = {
     width: '100%',
-    marginBottom: '20px'
+    marginTop: '20px'
   };
 
   const actionsContainerStyle = {
@@ -82,10 +83,10 @@ const GameIntro = ({
           <GameIcon size={120} color={COLORS.PRIMARY} />
         </div>
         <h1>{t(`games.${game.id}.title`)}</h1>
-        <p>{game.explain}</p>
       </div>
       
       <div style={contentStyle}>
+        <p>{t(`games.${game.id}.explain`)}</p>
         {children && <div style={settingsStyle}>{children}</div>}
       </div>
       

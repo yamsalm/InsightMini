@@ -52,11 +52,20 @@ export const getDailySessionGames = (blacklistedGames = []) => {
     !blacklistedGames.includes(game.id)
   );
   
-  // Shuffle the games
-  const shuffledGames = [...availableGames].sort(() => Math.random() - 0.5);
+  // Use a fixed order based on game IDs
+  const orderedGames = availableGames.sort((a, b) => {
+    // Put Connected Breaths first
+    if (a.id === 'connected-breaths') return -1;
+    if (b.id === 'connected-breaths') return 1;
+    // Put Mindful Review second
+    if (a.id === 'mindful-review') return -1;
+    if (b.id === 'mindful-review') return 1;
+    // Other games in alphabetical order
+    return a.id.localeCompare(b.id);
+  });
   
   // Return the first SESSION.DEFAULT_DAILY_SESSION_GAMES_COUNT games
-  return shuffledGames.slice(0, SESSION.DEFAULT_DAILY_SESSION_GAMES_COUNT);
+  return orderedGames.slice(0, SESSION.DEFAULT_DAILY_SESSION_GAMES_COUNT);
 };
 
 // Create a game record

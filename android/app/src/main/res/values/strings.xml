@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">insightmini</string>
+    <string name="title_activity_main">insightmini</string>
+    <string name="package_name">com.insightmini</string>
+    <string name="custom_url_scheme">com.insightmini</string>
+</resources>

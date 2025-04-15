@@ -6,7 +6,7 @@ import { useAppContext } from '../context/AppContext.jsx';
 import { createGameRecord } from '../utils/gameManager.js';
 import MindfulReviewIcon from '../components/game-icons/MindfulReviewIcon.jsx';
 
-const MindfulReview = ({ onComplete, onSkip }) => {
+const MindfulReview = ({ onComplete, onSkip, isDailySession = false }) => {
   const { userPreferences, updateGameSetting, t } = useAppContext();
   
   // Get game-specific settings or use defaults
@@ -15,7 +15,6 @@ const MindfulReview = ({ onComplete, onSkip }) => {
     numEvents: 3
   };
   
-  const [showIntro, setShowIntro] = useState(true);
   const [numEvents, setNumEvents] = useState(gameSettings.numEvents);
   const [gameState, setGameState] = useState('intro'); // intro, reviewing, complete
   const [currentEvent, setCurrentEvent] = useState(1);
@@ -27,6 +26,20 @@ const MindfulReview = ({ onComplete, onSkip }) => {
   const [consequence, setConsequence] = useState(null);
   const [hasConfirmedMindfulness, setHasConfirmedMindfulness] = useState(false);
   const [hasReimaginedEvent, setHasReimaginedEvent] = useState(false);
+  const [pulseState, setPulseState] = useState({
+    wholesome: false,
+    unwholesome: false,
+    physical: false,
+    verbal: false,
+    mental: false,
+    mindfulness: false,
+    intentions: {},
+    consequences: {
+      self: { negative: false, neutral: false, positive: false },
+      others: { negative: false, neutral: false, positive: false }
+    },
+    reimagine: false
+  });
 
   // Steps for each event review
   const steps = [
@@ -56,6 +69,13 @@ const MindfulReview = ({ onComplete, onSkip }) => {
       { id: 11, name: t(`games.${gameId}.intentions.attachment`), color: COLORS.WARNING, description: t(`games.${gameId}.intentions.attachmentDesc`) },
       { id: 12, name: t(`games.${gameId}.intentions.otherUnwholesome`), color: COLORS.DANGER, description: t(`games.${gameId}.intentions.otherUnwholesomeDesc`) }
     ]
+  };
+
+  const game = {
+    id: gameId,
+    name: t(`games.${gameId}.title`),
+    description: t(`games.${gameId}.description`),
+    icon: MindfulReviewIcon
   };
 
   useEffect(() => {
@@ -133,7 +153,6 @@ const MindfulReview = ({ onComplete, onSkip }) => {
   };
 
   const startGame = () => {
-    setShowIntro(false);
     setGameState('reviewing');
     setCurrentEvent(1);
     resetEventState();
@@ -152,59 +171,25 @@ const MindfulReview = ({ onComplete, onSkip }) => {
     onSkip();
   };
 
-  const game = {
-    id: gameId,
-    name: t(`games.${gameId}.title`),
-    explain: t(`games.${gameId}.description`),
-    icon: MindfulReviewIcon
+  const handleSessionComplete = () => {
+    if (isDailySession) {
+      // Create game record
+      const gameRecord = createGameRecord(gameId, {
+        sessionLength,
+        events: events.map(event => ({
+          type: event.type,
+          description: event.description,
+          timestamp: event.timestamp
+        }))
+      });
+      
+      // Call onComplete with the game record
+      onComplete(gameRecord);
+    } else {
+      // If not in daily session, just go back to home
+      onSkip();
+    }
   };
-
-  // Game intro settings
-  const introSettings = (
-    <div style={{ width: '100%' }}>
-      <div style={{
-        marginBottom: '20px',
-        width: '100%'
-      }}>
-        <label style={{
-          display: 'block',
-          marginBottom: '5px',
-          fontSize: '16px',
-          color: COLORS.TEXT
-        }}>
-          {t(`games.${gameId}.numEvents`)}:
-        </label>
-        <select 
-          value={numEvents} 
-          onChange={(e) => setNumEvents(Number(e.target.value))}
-          style={{
-            width: '100%',
-            padding: '10px',
-            fontSize: '16px',
-            borderRadius: '5px',
-            border: `1px solid ${COLORS.SECONDARY}`
-          }}
-        >
-          {[1, 2, 3, 4, 5].map(num => (
-            <option key={num} value={num}>{num}</option>
-          ))}
-        </select>
-      </div>
-    </div>
-  );
-
-  if (showIntro) {
-    return (
-      <GameIntro
-        game={game}
-        onStart={handleStart}
-        onSkip={handleSkip}
-        showSkip={false}
-      >
-        {introSettings}
-      </GameIntro>
-    );
-  }
 
   const gameContainerStyle = {
     display: 'flex',
@@ -248,20 +233,60 @@ const MindfulReview = ({ onComplete, onSkip }) => {
     marginTop: '20px'
   };
 
-  const buttonStyle = (isActive, color) => ({
-    width: '80px',
-    height: '80px',
+  const buttonStyle = (isActive, color, isPulsing = false) => ({
+    width: '96px',
+    height: '96px',
     borderRadius: '50%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: isActive ? color : COLORS.LIGHT,
+    backgroundImage: isActive ? `linear-gradient(145deg, ${color}, ${color}80)` : 'none',
     color: isActive ? COLORS.WHITE : COLORS.DARK,
-    border: 'none',
+    border: isActive ? `2px solid ${color}` : '2px solid transparent',
     cursor: 'pointer',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
+    boxShadow: isActive ? `0 4px 8px ${color}40` : '0 2px 5px rgba(0,0,0,0.1)',
+    transform: isPulsing ? 'scale(0.85)' : 'scale(1)',
+    transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+    '&:hover': {
+      backgroundColor: isActive ? color : `${color}20`,
+      transform: 'scale(1.05)'
+    }
   });
+
+  const handlePulse = (buttonId) => {
+    setPulseState(prev => ({ ...prev, [buttonId]: true }));
+    setTimeout(() => setPulseState(prev => ({ ...prev, [buttonId]: false })), 600);
+  };
+
+  const handleIntentionPulse = (intentionId) => {
+    setPulseState(prev => ({
+      ...prev,
+      intentions: { ...prev.intentions, [intentionId]: true }
+    }));
+    setTimeout(() => setPulseState(prev => ({
+      ...prev,
+      intentions: { ...prev.intentions, [intentionId]: false }
+    })), 600);
+  };
+
+  const handleConsequencePulse = (type, value) => {
+    setPulseState(prev => ({
+      ...prev,
+      consequences: {
+        ...prev.consequences,
+        [type]: { ...prev.consequences[type], [value]: true }
+      }
+    }));
+    setTimeout(() => setPulseState(prev => ({
+      ...prev,
+      consequences: {
+        ...prev.consequences,
+        [type]: { ...prev.consequences[type], [value]: false }
+      }
+    })), 600);
+  };
 
   const renderReviewing = () => {
     const step = steps[currentStep];
@@ -281,16 +306,22 @@ const MindfulReview = ({ onComplete, onSkip }) => {
           {currentStep === 0 && (
             <div style={buttonContainerStyle}>
               <button 
-                onClick={() => setIsWholesome(true)}
-                style={buttonStyle(isWholesome === true, COLORS.SUCCESS)}
+                onClick={() => {
+                  setIsWholesome(true);
+                  handlePulse('wholesome');
+                }}
+                style={buttonStyle(isWholesome === true, COLORS.SUCCESS, pulseState.wholesome)}
               >
                 <span style={{ fontSize: '24px' }}>✓</span>
                 <span style={{ fontSize: '12px', marginTop: '5px' }}>{t(`games.${gameId}.wholesome`)}</span>
               </button>
               
               <button 
-                onClick={() => setIsWholesome(false)}
-                style={buttonStyle(isWholesome === false, COLORS.DANGER)}
+                onClick={() => {
+                  setIsWholesome(false);
+                  handlePulse('unwholesome');
+                }}
+                style={buttonStyle(isWholesome === false, COLORS.DANGER, pulseState.unwholesome)}
               >
                 <span style={{ fontSize: '24px' }}>✗</span>
                 <span style={{ fontSize: '12px', marginTop: '5px' }}>{t(`games.${gameId}.unwholesome`)}</span>
@@ -302,22 +333,31 @@ const MindfulReview = ({ onComplete, onSkip }) => {
           {currentStep === 1 && (
             <div style={buttonContainerStyle}>
               <button 
-                onClick={() => setActionType('physical')}
-                style={buttonStyle(actionType === 'physical', COLORS.PRIMARY)}
+                onClick={() => {
+                  setActionType('physical');
+                  handlePulse('physical');
+                }}
+                style={buttonStyle(actionType === 'physical', COLORS.PRIMARY, pulseState.physical)}
               >
                 <span style={{ fontSize: '12px' }}>{t(`games.${gameId}.physical`)}</span>
               </button>
               
               <button 
-                onClick={() => setActionType('verbal')}
-                style={buttonStyle(actionType === 'verbal', COLORS.INFO)}
+                onClick={() => {
+                  setActionType('verbal');
+                  handlePulse('verbal');
+                }}
+                style={buttonStyle(actionType === 'verbal', COLORS.INFO, pulseState.verbal)}
               >
                 <span style={{ fontSize: '12px' }}>{t(`games.${gameId}.verbal`)}</span>
               </button>
               
               <button 
-                onClick={() => setActionType('mental')}
-                style={buttonStyle(actionType === 'mental', COLORS.WARNING)}
+                onClick={() => {
+                  setActionType('mental');
+                  handlePulse('mental');
+                }}
+                style={buttonStyle(actionType === 'mental', COLORS.WARNING, pulseState.mental)}
               >
                 <span style={{ fontSize: '12px' }}>{t(`games.${gameId}.mental`)}</span>
               </button>
@@ -345,8 +385,11 @@ const MindfulReview = ({ onComplete, onSkip }) => {
               </div>
               <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
                 <button 
-                  onClick={() => setHasConfirmedMindfulness(true)}
-                  style={buttonStyle(true, COLORS.PRIMARY)}
+                  onClick={() => {
+                    setHasConfirmedMindfulness(true);
+                    handlePulse('mindfulness');
+                  }}
+                  style={buttonStyle(true, COLORS.PRIMARY, pulseState.mindfulness)}
                 >
                   <span style={{ fontSize: '24px' }}>✓</span>
                 </button>
@@ -368,19 +411,15 @@ const MindfulReview = ({ onComplete, onSkip }) => {
                   ? intentions.wholesome.map(intention => (
                       <button
                         key={intention.id}
-                        onClick={() => setSelectedIntention(intention)}
-                        style={{
-                          width: '80px',
-                          height: '80px',
-                          borderRadius: '50%',
-                          backgroundColor: selectedIntention?.id === intention.id ? intention.color : COLORS.LIGHT,
-                          color: selectedIntention?.id === intention.id ? COLORS.WHITE : COLORS.DARK,
-                          border: 'none',
-                          cursor: 'pointer',
-                          margin: '0 auto',
-                          fontSize: '12px',
-                          textAlign: 'center'
+                        onClick={() => {
+                          setSelectedIntention(intention);
+                          handleIntentionPulse(intention.id);
                         }}
+                        style={buttonStyle(
+                          selectedIntention?.id === intention.id,
+                          intention.color,
+                          pulseState.intentions[intention.id]
+                        )}
                       >
                         {intention.name}
                       </button>
@@ -388,19 +427,15 @@ const MindfulReview = ({ onComplete, onSkip }) => {
                   : intentions.unwholesome.map(intention => (
                       <button
                         key={intention.id}
-                        onClick={() => setSelectedIntention(intention)}
-                        style={{
-                          width: '80px',
-                          height: '80px',
-                          borderRadius: '50%',
-                          backgroundColor: selectedIntention?.id === intention.id ? intention.color : COLORS.LIGHT,
-                          color: selectedIntention?.id === intention.id ? COLORS.WHITE : COLORS.DARK,
-                          border: 'none',
-                          cursor: 'pointer',
-                          margin: '0 auto',
-                          fontSize: '12px',
-                          textAlign: 'center'
+                        onClick={() => {
+                          setSelectedIntention(intention);
+                          handleIntentionPulse(intention.id);
                         }}
+                        style={buttonStyle(
+                          selectedIntention?.id === intention.id,
+                          intention.color,
+                          pulseState.intentions[intention.id]
+                        )}
                       >
                         {intention.name}
                       </button>
@@ -435,22 +470,43 @@ const MindfulReview = ({ onComplete, onSkip }) => {
                   </h5>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                     <button 
-                      onClick={() => setConsequence({...consequence, self: 'negative'})}
-                      style={buttonStyle(consequence?.self === 'negative', COLORS.DANGER)}
+                      onClick={() => {
+                        setConsequence({...consequence, self: 'negative'});
+                        handleConsequencePulse('self', 'negative');
+                      }}
+                      style={buttonStyle(
+                        consequence?.self === 'negative',
+                        COLORS.DANGER,
+                        pulseState.consequences.self.negative
+                      )}
                     >
-                      <span style={{ fontSize: '24px' }}>−</span>
+                      <span style={{ fontSize: '14px' }}>{t(`games.${gameId}.negative`)}</span>
                     </button>
                     <button 
-                      onClick={() => setConsequence({...consequence, self: 'neutral'})}
-                      style={buttonStyle(consequence?.self === 'neutral', COLORS.SECONDARY)}
+                      onClick={() => {
+                        setConsequence({...consequence, self: 'neutral'});
+                        handleConsequencePulse('self', 'neutral');
+                      }}
+                      style={buttonStyle(
+                        consequence?.self === 'neutral',
+                        COLORS.SECONDARY,
+                        pulseState.consequences.self.neutral
+                      )}
                     >
-                      <span style={{ fontSize: '24px' }}>○</span>
+                      <span style={{ fontSize: '14px' }}>{t(`games.${gameId}.neutral`)}</span>
                     </button>
                     <button 
-                      onClick={() => setConsequence({...consequence, self: 'positive'})}
-                      style={buttonStyle(consequence?.self === 'positive', COLORS.SUCCESS)}
+                      onClick={() => {
+                        setConsequence({...consequence, self: 'positive'});
+                        handleConsequencePulse('self', 'positive');
+                      }}
+                      style={buttonStyle(
+                        consequence?.self === 'positive',
+                        COLORS.SUCCESS,
+                        pulseState.consequences.self.positive
+                      )}
                     >
-                      <span style={{ fontSize: '24px' }}>+</span>
+                      <span style={{ fontSize: '14px' }}>{t(`games.${gameId}.positive`)}</span>
                     </button>
                   </div>
                 </div>
@@ -470,22 +526,43 @@ const MindfulReview = ({ onComplete, onSkip }) => {
                   </h5>
                   <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                     <button 
-                      onClick={() => setConsequence({...consequence, others: 'negative'})}
-                      style={buttonStyle(consequence?.others === 'negative', COLORS.DANGER)}
+                      onClick={() => {
+                        setConsequence({...consequence, others: 'negative'});
+                        handleConsequencePulse('others', 'negative');
+                      }}
+                      style={buttonStyle(
+                        consequence?.others === 'negative',
+                        COLORS.DANGER,
+                        pulseState.consequences.others.negative
+                      )}
                     >
-                      <span style={{ fontSize: '24px' }}>−</span>
+                      <span style={{ fontSize: '14px' }}>{t(`games.${gameId}.negative`)}</span>
                     </button>
                     <button 
-                      onClick={() => setConsequence({...consequence, others: 'neutral'})}
-                      style={buttonStyle(consequence?.others === 'neutral', COLORS.SECONDARY)}
+                      onClick={() => {
+                        setConsequence({...consequence, others: 'neutral'});
+                        handleConsequencePulse('others', 'neutral');
+                      }}
+                      style={buttonStyle(
+                        consequence?.others === 'neutral',
+                        COLORS.SECONDARY,
+                        pulseState.consequences.others.neutral
+                      )}
                     >
-                      <span style={{ fontSize: '24px' }}>○</span>
+                      <span style={{ fontSize: '14px' }}>{t(`games.${gameId}.neutral`)}</span>
                     </button>
                     <button 
-                      onClick={() => setConsequence({...consequence, others: 'positive'})}
-                      style={buttonStyle(consequence?.others === 'positive', COLORS.SUCCESS)}
+                      onClick={() => {
+                        setConsequence({...consequence, others: 'positive'});
+                        handleConsequencePulse('others', 'positive');
+                      }}
+                      style={buttonStyle(
+                        consequence?.others === 'positive',
+                        COLORS.SUCCESS,
+                        pulseState.consequences.others.positive
+                      )}
                     >
-                      <span style={{ fontSize: '24px' }}>+</span>
+                      <span style={{ fontSize: '14px' }}>{t(`games.${gameId}.positive`)}</span>
                     </button>
                   </div>
                 </div>
@@ -512,8 +589,11 @@ const MindfulReview = ({ onComplete, onSkip }) => {
                 </p>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   <button 
-                    onClick={() => setHasReimaginedEvent(true)}
-                    style={buttonStyle(true, COLORS.SUCCESS)}
+                    onClick={() => {
+                      setHasReimaginedEvent(true);
+                      handlePulse('reimagine');
+                    }}
+                    style={buttonStyle(true, COLORS.SUCCESS, pulseState.reimagine)}
                   >
                     <span style={{ fontSize: '24px' }}>✓</span>
                   </button>
@@ -521,10 +601,76 @@ const MindfulReview = ({ onComplete, onSkip }) => {
               </div>
             </div>
           )}
+
+          {/* Finish Early Button */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            marginTop: '20px',
+            paddingTop: '10px',
+            borderTop: `1px solid ${COLORS.LIGHT}`
+          }}>
+            <button
+              onClick={handleSkip}
+              style={{
+                padding: '8px 16px',
+                fontSize: '0.9rem',
+                color: COLORS.SECONDARY,
+                backgroundColor: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              {t('common.finishEarly')}
+            </button>
+          </div>
         </div>
       </div>
     );
   };
+
+  if (gameState === 'intro') {
+    return (
+      <GameIntro
+        game={game}
+        onStart={handleStart}
+        onSkip={onSkip}
+        showSkip={isDailySession}
+      >
+        <div style={{ width: '100%' }}>
+          <div style={{
+            marginBottom: '20px',
+            width: '100%'
+          }}>
+            <label style={{
+              display: 'block',
+              marginBottom: '5px',
+              fontSize: '16px',
+              color: COLORS.TEXT
+            }}>
+              {t(`games.${gameId}.numEvents`)}:
+            </label>
+            <select 
+              value={numEvents} 
+              onChange={(e) => setNumEvents(Number(e.target.value))}
+              style={{
+                width: '100%',
+                padding: '10px',
+                fontSize: '16px',
+                borderRadius: '5px',
+                border: `1px solid ${COLORS.SECONDARY}`
+              }}
+            >
+              {[1, 2, 3, 4, 5].map(num => (
+                <option key={num} value={num}>{num}</option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </GameIntro>
+    );
+  }
 
   return renderReviewing();
 };

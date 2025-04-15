@@ -1,4 +1,4 @@
-import React from 'react';
+ import React from 'react';
 import { COLORS } from '../../utils/constants.jsx';
 
 const MindfulReviewIcon = ({ size = 72, color = COLORS.PRIMARY }) => {
@@ -24,27 +24,7 @@ const MindfulReviewIcon = ({ size = 72, color = COLORS.PRIMARY }) => {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M9 9H15"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 12H15"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M9 15H15"
-        stroke={color}
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    
     </svg>
   );
 };

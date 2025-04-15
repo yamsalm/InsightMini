@@ -15,32 +15,19 @@ const DailySession = ({ setScreen, setCurrentGame, onBack }) => {
     addGameRecord
   } = useAppContext();
 
-  // Shuffle the games array
-  const [shuffledGames, setShuffledGames] = useState([]);
-
-  // Function to shuffle array using Fisher-Yates algorithm
-  const shuffleArray = (array) => {
-    const newArray = [...array];
-    for (let i = newArray.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-  };
+  // Use the games in their original order
+  const [orderedGames, setOrderedGames] = useState(dailySessionGames);
 
   useEffect(() => {
-    // Only shuffle if we're starting a new session (dailySessionProgress is 0)
+    // Only set the games if we're starting a new session (dailySessionProgress is 0)
     if (dailySessionProgress === 0) {
-      setShuffledGames(shuffleArray(dailySessionGames));
-    } else {
-      // If returning to an existing session, maintain the current order
-      setShuffledGames(dailySessionGames);
+      setOrderedGames(dailySessionGames);
     }
   }, [dailySessionGames, dailySessionProgress]);
 
   const handleStartNextGame = () => {
-    if (dailySessionProgress < shuffledGames.length) {
-      const currentGame = shuffledGames[dailySessionProgress];
+    if (dailySessionProgress < orderedGames.length) {
+      const currentGame = orderedGames[dailySessionProgress];
       setCurrentGame(currentGame);
       contextSetCurrentGame(currentGame);
       setScreen(SCREENS.GAME);
@@ -145,7 +132,7 @@ const DailySession = ({ setScreen, setCurrentGame, onBack }) => {
     <MainLayout title={t('dailySession.title')} onBack={handleBack}>
       <div style={containerStyle}>
         <div style={progressStyle}>
-          {shuffledGames.map((_, index) => (
+          {orderedGames.map((_, index) => (
             <div key={index} style={progressItemStyle(index)}></div>
           ))}
         </div>
@@ -153,7 +140,7 @@ const DailySession = ({ setScreen, setCurrentGame, onBack }) => {
         <h2 style={sectionTitleStyle}>{t('dailySession.todaysGames')}</h2>
         
         <div style={gameListStyle}>
-          {shuffledGames.map((game, index) => (
+          {orderedGames.map((game, index) => (
             <div key={index} style={gameItemStyle(index)}>
               <div style={gameNumberStyle}>{index + 1}</div>
               <div style={gameInfoStyle}>
@@ -165,7 +152,7 @@ const DailySession = ({ setScreen, setCurrentGame, onBack }) => {
         </div>
         
         <Button 
-          text={`${t('dailySession.start')} ${t(`games.${shuffledGames[dailySessionProgress]?.id}.title`) || t('dailySession.game')}`} 
+          text={`${t('dailySession.start')} ${t(`games.${orderedGames[dailySessionProgress]?.id}.title`) || t('dailySession.game')}`} 
           onClick={handleStartNextGame} 
           fullWidth
         />

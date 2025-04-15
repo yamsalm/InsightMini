@@ -149,7 +149,12 @@ function App() {
         margin: '0 auto', 
         minHeight: '100vh',
         backgroundColor: '#f5f5f5',
-        fontFamily: 'Arial, sans-serif'
+        fontFamily: 'Arial, sans-serif',
+        userSelect: 'none',
+        WebkitUserSelect: 'none',
+        MozUserSelect: 'none',
+        msUserSelect: 'none',
+        cursor: 'default'
       }}>
         <AppContent />
       </div>

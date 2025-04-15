@@ -24,7 +24,23 @@ export const AppProvider = ({ children }) => {
   const [state, setState] = useState(() => {
     // Load state from localStorage if available
     const savedState = localStorage.getItem('insightMiniState');
-    return savedState ? JSON.parse(savedState) : initialState;
+    const parsedState = savedState ? JSON.parse(savedState) : initialState;
+    
+    // Check if we need to reset daily session (new day)
+    const lastSessionDate = parsedState.lastSessionDate;
+    const today = new Date().toDateString();
+    
+    if (lastSessionDate !== today) {
+      return {
+        ...parsedState,
+        dailySessionGames: [],
+        dailySessionProgress: 0,
+        isDailySessionActive: false,
+        lastSessionDate: today
+      };
+    }
+    
+    return parsedState;
   });
 
   // Save state to localStorage whenever it changes
@@ -82,7 +98,8 @@ export const AppProvider = ({ children }) => {
       ...prevState,
       dailySessionGames: games,
       dailySessionProgress: 0,
-      isDailySessionActive: true
+      isDailySessionActive: true,
+      lastSessionDate: new Date().toDateString()
     }));
   };
 
@@ -102,12 +119,22 @@ export const AppProvider = ({ children }) => {
 
       return {
         ...prevState,
-        dailySessionProgress: newProgress,
+        dailySessionProgress: isSessionComplete ? 0 : newProgress,
         isDailySessionActive: !isSessionComplete
       };
     });
 
     return state.dailySessionProgress + 1 >= state.dailySessionGames.length;
+  };
+
+  // Complete daily session
+  const completeDailySession = () => {
+    setState(prevState => ({
+      ...prevState,
+      dailySessionGames: [],
+      dailySessionProgress: 0,
+      isDailySessionActive: false
+    }));
   };
 
   const updateGameSetting = (gameId, settings) => {
@@ -173,6 +200,7 @@ export const AppProvider = ({ children }) => {
     startDailySession,
     setCurrentGame,
     nextGameInDailySession,
+    completeDailySession,
     updateGameSetting,
     toggleGameEnabled,
     setLanguage,
