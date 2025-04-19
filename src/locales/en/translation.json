@@ -64,6 +64,67 @@
         "otherUnwholesome": "Other Unwholesome",
         "otherUnwholesomeDesc": "Another unwholesome intention"
       }
+    },
+    "connected-breaths": {
+      "title": "Connected Breaths",
+      "description": "Practice mindful breathing",
+      "longer": "Longer",
+      "equal": "Equal",
+      "shorter": "Shorter", 
+      "sessionLength": "Session Length",
+      "explain": "Notice how each breath connects to the next. Observe whether each breath is longer, equal to, or shorter than the previous one."
+    },
+    "body-scan": {
+      "title": "Body Scan",
+      "description": "Examine physical sensations throughout your body",
+      "explain": "This practice guides your awareness through different parts of your body, helping you notice physical sensations with mindful attention.",
+      "loading": "Preparing your practice...",
+      "totalDuration": "Total Duration",
+      "timePerPart": "Time Per Part",
+      "order": "Body Part Order",
+      "noticePrompt": "Notice the sensations in this area...",
+      "finishEarly": "Finish early",
+      "orderOptions": {
+        "sequential": "Sequential",
+        "random": "Random"
+      },
+      "intensity": {
+        "subtitle": "Subtle",
+        "low": "barely perceptible",
+        "mild": "mild",
+        "moderate": "moderate",
+        "strong": "strong",
+        "intense": "very intense"
+      },
+      "quality": {
+        "veryUncomfortable": "Very uncomfortable",
+        "uncomfortable": "Uncomfortable",
+        "slightlyUncomfortable": "Slightly uncomfortable",
+        "neutral": "Neutral",
+        "slightlyPleasant": "Slightly pleasant",
+        "pleasant": "Pleasant",
+        "veryPleasant": "Very pleasant"
+      },
+      "bodyParts": {
+        "head": "Head",
+        "shoulders": "Shoulders",
+        "chest": "Chest",
+        "abdomen": "Abdomen",
+        "arms": "Arms",
+        "hands": "Hands",
+        "legs": "Legs",
+        "feet": "Feet"
+      }
     }
+  },
+  "common": {
+    "of": "of",
+    "seconds": "seconds",
+    "timeFormat": "{{minutes}} minutes",
+    "start": "Start",
+    "skip": "Skip",
+    "back": "Back",
+    "dontShowAgain": "Don't show again",
+    "sessionComplete": "Session Complete"
   }
 } 

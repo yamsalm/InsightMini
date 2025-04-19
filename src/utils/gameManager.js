@@ -22,7 +22,7 @@ export const getGamesByCategory = (category) => {
   return games.filter(game => {
     switch (category) {
       case CATEGORIES.MINDFULNESS:
-        return game.id === 'connected-breaths';
+        return game.id === 'connected-breaths' || game.id === 'body-scan';
       case CATEGORIES.CONDUCT:
         return game.id === 'mindful-review';
       default:
@@ -60,6 +60,9 @@ export const getDailySessionGames = (blacklistedGames = []) => {
     // Put Mindful Review second
     if (a.id === 'mindful-review') return -1;
     if (b.id === 'mindful-review') return 1;
+    // Put Body Scan third
+    if (a.id === 'body-scan') return -1;
+    if (b.id === 'body-scan') return 1;
     // Other games in alphabetical order
     return a.id.localeCompare(b.id);
   });

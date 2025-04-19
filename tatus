@@ -1,0 +1,4 @@
+[33m4876a19[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m feat: add negative, positive, and neutral translations for mindful review game
+[33maacf6f8[m chore: add Android and Capacitor configuration
+[33m06223f4[m fix: resolve game component loading issues and improve translations
+[33m78925b9[m Initial commit: Project setup with React components and game utilities
