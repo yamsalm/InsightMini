@@ -12,8 +12,8 @@ export const TRANSLATIONS = {
         mindfulnessDescription: 'Games that develop awareness and presence',
         breathing: 'Breathing Games',
         breathingDescription: 'Games that help with breath control and relaxation'
-      },
-     
+      }
+    },
     common: {
       start: 'Start',
       skip: 'Skip',
